@@ -13,3 +13,20 @@ module.exports.getSingleProduct = (req, res) => {
     }
     res.status(201).json(prod[0])    
 }
+
+module.exports.addData = (req, res) => {
+    const newData = req.body    
+
+    const keys = Object.keys(newData)
+
+    if(!(keys.includes("id") && keys.includes("description") && keys.includes("price"))){
+        res.status(404).json({ message: "Must have id, price and description" })
+    }  
+
+    const newList = [...products, newData]    
+    res.status(201).json(newList)
+}
+
+module.exports.deleteData = (req, res) => {
+    res.json({})   
+}
