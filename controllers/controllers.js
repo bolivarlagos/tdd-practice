@@ -28,5 +28,14 @@ module.exports.addData = (req, res) => {
 }
 
 module.exports.deleteData = (req, res) => {
-    res.json({})   
+    const { id } = req.params
+    const wasFound = products.find(item => item.id == id)
+
+    if(!wasFound){
+        res.status(404).send({ message: 'Invalid ID'})
+    }
+
+    const listProds = products.filter(item => item.id != id)
+
+    res.status(201).json(listProds)   
 }

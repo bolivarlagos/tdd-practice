@@ -110,5 +110,45 @@ describe('Post routes', () => {
 
 describe('Delete routes', () => {
 
-    test('')
+    test('delete() should delete an object whit specific id', async () => {        
+
+        const listDeleted = [
+            {
+                id: 1,
+                description: 'Iphone X',
+                price: 1500
+            },
+            {
+                id: 2,
+                description: 'Samsumg Galaxy 20',
+                price: 1200
+            }
+        ]
+
+        const response = await request(app).delete('/api/products/3')
+
+        expect(response.body).toEqual(listDeleted)
+    })
+    test('delete() status code should be 201 if object was found', async () => {
+
+        const response = await request(app).delete('/api/products/3')
+
+        expect(response.status).toEqual(201)
+    })
+
+    test('delete() should throw error if id was not found', async () => {
+
+        const response = await request(app).delete('/api/products/4')
+        const message = JSON.parse(response.text)        
+
+        expect(message).toEqual({ message: "Invalid ID" })
+    })
+
+    test('delete() status code should be 404', async () => {
+
+        const response = await request(app).delete('/api/products/4')
+
+        expect(response.status).toEqual(404)
+    })
 })
+
