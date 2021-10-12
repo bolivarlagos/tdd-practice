@@ -39,3 +39,23 @@ module.exports.deleteData = (req, res) => {
 
     res.status(201).json(listProds)   
 }
+
+module.exports.updateData = (req, res) => {
+    const { id } = req.params
+    const newObj = req.body 
+
+    const keys = Object.keys(newObj)
+
+    if(!(keys.includes("id") && keys.includes("description") && keys.includes("price"))){
+        res.status(404).json({ message: "Must have id, price and description" })
+    }
+
+    const listProds = products.map(product => {
+        if(product.id == id){
+            return newObj
+        }
+        return product
+    })
+
+    res.status(201).json(listProds)     
+}

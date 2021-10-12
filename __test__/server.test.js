@@ -152,3 +152,69 @@ describe('Delete routes', () => {
     })
 })
 
+describe('Put routes', () => {
+    
+    test('put() should modify description', async () => {
+
+        const toChange = {
+            id: 1,
+            description: 'Iphone X-2',
+            price: 1500
+        }
+
+        const changedProducts = [
+            {
+                id: 1,
+                description: 'Iphone X-2',
+                price: 1500
+            },
+            {
+                id: 2,
+                description: 'Samsumg Galaxy 20',
+                price: 1200
+            },
+            {
+                id: 3,
+                description: 'Macbook Pro',
+                price: 2000
+            }            
+        ]
+        
+        const response = await request(app).put('/api/products/1').send(toChange)
+        expect(response.body).toEqual(changedProducts)        
+    })
+    test('put() should return status code 201', async () => {
+        const toChange = {
+            id: 1,
+            description: 'Iphone X-2',
+            price: 1500
+        }        
+
+        const response = await request(app).put('/api/products/1').send(toChange)
+        expect(response.status).toBe(201)
+    })
+
+    test('put() should display message', async () => {
+        const toChange = {
+            id: 1,
+            price: 1500
+        }
+
+        const response = await request(app).put('/api/products/1').send(toChange)
+        const message = JSON.parse(response.text)
+
+        expect(message).toEqual({ message: "Must have id, price and description" })
+    })
+
+    test('put() status code should be 404', async () => {
+        const toChange = {
+            id: 1,
+            price: 1500
+        }
+
+        const response = await request(app).put('/api/products/1').send(toChange)
+
+        expect(response.status).toBe(404)
+    })
+
+})
